@@ -1,0 +1,27 @@
+{
+  "name": "caesar",
+  "version": "1.0.0",
+  "description": "tunnitöö",
+  "main": "index.html",
+  "scripts": {
+    "test": "npm run scss-compile",
+    "scss-compile": "node-sass -rw assets/scss -o assets/css",
+    "watch": "npm run scss-compile"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/villerm/javascript.git"
+  },
+  "author": "viller maine",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/villerm/javascript/issues"
+  },
+  "homepage": "https://github.com/villerm/javascript#readme",
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "scss-compile": "^0.1.7"
+  },
+  "devDependencies": {}
+}
