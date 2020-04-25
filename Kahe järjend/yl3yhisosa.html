@@ -1,0 +1,48 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahe järjendi ühisosa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Kahe järjendi ühisosa</h1>
+<p>Sisesta komaga eraldatud 1. järjendi väärtused:</p>
+<input type="text" name="" id="j1">
+<p>Sisesta komaga eraldatud 2. järjendi väärtused:</p>
+<input type="text" name="" id="j2">
+<p><button onclick="yhisosa()">Vajuta nuppu</button></p>
+<p id="tulem"></p>
+<script>
+    function getId(id){
+        return document.getElementById(id);
+    }
+    //elemendi väärtus
+    function getVal(id){
+        return getId(id).value.trim();
+    }
+    function yhisosa() {
+        var j1txt = getVal('j1').replace(/\s/g, '');//eemaldab tyhikud
+        var j2txt = getVal('j2').replace(/\s/g, '');
+        if(j1txt.length==0|j2txt.length==0){
+            getId('tulem').innerHTML = '';
+            return;
+        }
+        var j1=j1txt.split(','); // teeb j2rjendiks
+        var j2=j2txt.split(',');
+        var yhis=[];
+        j1.forEach(function(el) {
+            if(j2.indexOf(el) != -1){
+                yhis.push(el);
+            }
+        });
+        //kontrollib kas yhisosi oli
+        if(!yhis.length){
+            getId('tulem').innerHTML = 'ühisosa puudub';
+        } else {
+            getId('tulem').innerHTML = 'ühesugused väärtused: '+yhis.join(', ')+ '(kokku '+yhis.length+' väärtust)';
+        }
+    }
+</script>
+</body>
+</html>
