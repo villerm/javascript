@@ -20,7 +20,7 @@
   "homepage": "https://github.com/villerm/javascript#readme",
   "dependencies": {
     "bootstrap": "^4.4.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "scss-compile": "^0.1.7"
   },
   "devDependencies": {}
