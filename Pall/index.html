@@ -1,0 +1,63 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pall</title>
+    <script src="pall.js"></script>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="300"></canvas>
+    <button onClick="lopp()">Lõpeta</button>
+    <script>
+        function lopp(){
+            clearInterval(kell);
+            ctx.clearRect(0,0,w,h);
+        }
+        function windowToCanvas(canvas, x, y){
+            var bbox = canvas.getBoundingClientRect();
+            return { x: x - bbox.left *(canvas.width / bbox.width), y: y -bbox.top *(canvas.height / bbox.height)}
+        }
+        var tahvel = document.getElementById("canvas");
+        tahvel.onmousedown = function(e){
+            var loc = windowToCanvas(tahvel, e.clientX, e.clientY);
+            for (pall of pallid){
+                if (loc.x >= (pall.x-pall.radius) && loc.x <= (pall.x+pall.radius) && loc.y >= (pall.y-pall.radius) && loc.y <= (pall.y+pall.radius) ){
+                    pall.shrink += 2;
+                }
+            }
+        }
+        var ctx = tahvel.getContext("2d");
+        var w = tahvel.width;
+        var h = tahvel.height;
+        var r = 30; 
+        var px = Math.floor(Math.random()*(w-r*2)) + r*2;
+        var py = Math.floor(Math.random()*(h-r*2)) + r*2;
+        var pall = new Pall(px, py, r, "#0000FF");
+        var pallid = [pall];
+        var kell = setInterval(joonista, 500);
+        function joonista(){
+            ctx.clearRect(0,0,w,h);
+            for (pall of pallid){
+                pall.draw();
+                pall.radius -= pall.shrink;
+                if (pall.radius < 2) {
+                    px = Math.floor(Math.random()*(w-r*2)) + r*2;
+                    py = Math.floor(Math.random()*(h-r*2)) + r*2;
+                    pall.radius = r;
+                    pall.x = px;
+                    pall.y = py;
+                    px = Math.floor(Math.random()*(w-r*2)) + r*2;
+                    py = Math.floor(Math.random()*(h-r*2)) + r*2;
+                    var pall1 = new Pall(px, py, r, "#0000FF");
+                    pallid.push(pall1);
+                };
+            }
+        }
+    </script>
+</body>
+</html>

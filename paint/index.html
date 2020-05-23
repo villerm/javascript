@@ -1,0 +1,21 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAINT </title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div class="container">
+        <div class="toolbar">
+            <a href="#" class="selected" id="brush" onclick="ChangeTool('brush')">Brush</a>
+            <a href="#" id="eraser" onclick="ChangeTool('eraser')">Eraser</a>
+            Brush size
+            <input type="range" min="2" max="20" id="brushSize">
+        </div>
+        <canvas id="my-canvas" width="600" height="600"></canvas>
+        
+    </div>
+</body>
+</html>
