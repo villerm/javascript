@@ -1,0 +1,67 @@
+.fieldgroup{
+    display: block;
+    max-width: 500px;
+    border: 2px solid #000;
+    padding: 25px;
+}
+.field{
+    display:block;
+    max-width: 600px;
+}
+.field input{
+    margin: 5px 0 21px;
+    display: block;
+}
+.field input[type=checkbox]{
+    margin: 5px 0 21px;
+    display: inline-block;
+    margin-left: 25px;
+}
+#searchResult{
+    margin-top:25px;
+}
+.select{
+    margin-left:10px;
+}
+tr{
+    border-bottom:2px solid #000;
+}
+td{
+    padding:5 15px;
+}
+thead{
+    font-weight: bold;
+}
+.nupp{
+    padding:15px 25px;
+    margin:25px 0 0;
+}
+.date{
+    padding: 5px;
+}
+.container{
+    max-width: 1200px;
+    margin: auto;
+    width: auto;
+    margin-bottom: 35px;
+    padding: 15px;
+}
+#otsing{
+    display:inline-block;
+    width: 69%;
+    margin: 0;
+    height: 50px;
+}
+.nupp--otsi{
+    margin: 0;
+    display: inline-block;
+    width: 30%;
+}
+.searchbox{
+    display: block;
+    max-width: 100%;
+    width: auto;
+}
+.searchbox{
+
+}

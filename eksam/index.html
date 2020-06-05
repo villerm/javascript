@@ -1,0 +1,177 @@
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viller Maine | Eksam</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="kuvarattad()">
+<script>
+    //lisame ratta
+    var minuratas = new Ratas(1,'kross', 20);
+    minuratas.Laenamine('03.06.2020', '05.06.2020');
+    minuratas.Tagastamine('22.06.2020');
+    //kuvame ratta logidesse
+    console.log(minuratas);
+
+    //lisame uue laenutuse
+    var minulaenutus = new Laenutus();
+    //lisame laenutusse rattaid
+    minulaenutus.lisaRatas(1, 'kross', 20);
+    minulaenutus.lisaRatas(2, 'tänav', 15);
+    minulaenutus.lisaRatas(3, 'hybrid', 45);
+    minulaenutus.lisaRatas(4, 'kross', 20);
+    minulaenutus.lisaRatas(5, 'sport', 35);
+    minulaenutus.lisaRatas(6, 'sport', 40);
+    minulaenutus.lisaRatas(7, 'elektri', 80);
+    minulaenutus.lisaRatas(8, 'elektri', 80);
+    //eemaldame ratta id 3-ga
+    minulaenutus.eemaldaRatas(3);
+    //kuvame rataste seisu peale eemaldamist
+    console.log(minulaenutus.rattad);
+    //otsime rataste massivist liigi järgi "hybrid" ning kuvame tulemuse konsooli
+    console.log(minulaenutus.otsiLiik('tänav'));
+    //otsime rataste massivist liigi järgi "hybrid"(mis peaks olema eemaldatud juba) ning kuvame tulemuse konsooli
+    console.log(minulaenutus.otsiLiik('hybrid'));
+    function lisaLaenutusse(){
+        var rattaID = document.getElementById('rattaID').value;
+        var rattaLiik = document.getElementById('rattaLiik').value;
+        var rattaHind = document.getElementById('rattaHind').value;
+        var rattaViivis = document.getElementById('rattaViivis').value;
+        if(rattaID.length>0 & rattaLiik.length>0 & rattaHind.length>0 & rattaViivis.length>0){
+            var displayResult = document.getElementById('lisaResult');
+            //kui väljad täidetud, siis lisame uue ratta laenutusse.
+            if(minulaenutus.lisaRatas(rattaID, rattaLiik, rattaHind, rattaViivis)){
+                displayResult.innerHTML = 'Ratas lisatud! (ID:'+rattaID+' Liik:'+rattaLiik+' Hind:'+rattaHind+' Viivis:'+rattaViivis+')';
+                //console.log(minulaenutus.rattad);
+            } else {
+                displayResult.innerHTML = 'Antud ID-ga on ratas juba lisatud! (ID:'+rattaID+')';
+            }
+
+        } else{
+            console.log('Täida väljad!');
+        }
+        kuvarattad();
+    }
+    function otsiLiik(){
+        var otsingusona = document.getElementById('otsing').value;
+        if(otsingusona.length>0){
+            tulemus = minulaenutus.otsiLiik(otsingusona);
+            var searchResult = document.getElementById('searchResult');
+            if(tulemus.length>0){
+                console.log(tulemus);
+                searchResult.innerHTML = '<strong>Leitud tulemus:</strong>';
+                for (var r of tulemus) {
+                    searchResult.innerHTML += '<div><strong>ID</strong>:'+r.id+' <strong>Hind:</strong>'+r.hind+' <strong>Liik:</strong>'+r.liik+' <strong>Viivis:</strong>'+r.viivis+'<input type="checkbox" name="laenaID" id="laenaID" value="'+r.id+'"><label class="select" for="laenaID">Vali ratas</label></div>';
+                }
+                searchResult.innerHTML += '<h4>Laena ratast/rattaid</h4>';
+                searchResult.innerHTML += '<input class="date startdate" type="date" id="startDate"> kuni <input class="date enddate" type="date" name="enddate" id="endDate">';
+                searchResult.innerHTML += '<button onclick="laenutaRatas(1)">Laenuta</button>';
+            } else {
+                searchResult.innerHTML = '<strong>Antud liiki ei leitud!</strong>';
+            }
+            
+        }
+    }
+    function kuvarattad(){
+        var rattad = minulaenutus.rattad;
+        var tabel = document.getElementById('tabel');
+        var result = '<thead><tr><td>ID</td><td>Hind</td><td>Liik</td><td>Viivis</td><td>Laenatud</td><td>Tagastamise kp</td><td>Tagastatud</td><td>Laenuta</td></tr></thead>';
+        var disabled = '';
+        for(ratas of rattad){
+            if(ratas.laenatud !== null){
+                disabled = 'disabled';
+            }
+            result += '<tr><td>'+ratas.id+'</td><td>'+ratas.hind+'</td><td>'+ratas.liik+'</td><td>'+ratas.viivis+'</td><td>'+ratas.laenatud+'</td><td>'+ratas.plaanTagastus+'</td><td>'+ratas.tagastatud+'</td><td><input '+disabled+' type="checkbox" name="laenaID" id="laenaID" value="'+ratas.id+'"></td></tr>'
+            disabled = null;
+        }
+        tabel.innerHTML = result;
+    }
+    function laenutaRatas(button=0){
+        var rattaID = null;
+        var inputElements = document.getElementsByName('laenaID');
+        var startDate = document.getElementsByClassName('startdate')[button].value;
+        var endDate = document.getElementsByClassName('endDate')[button].value;
+        console.log(endDate);
+        for(var i=0; inputElements[i]; ++i){
+            if(inputElements[i].checked){
+                rattaID = inputElements[i].value;
+                if( startDate.length > 0 && endDate.length > 0){
+                    rattaID = parseInt(rattaID);
+                    for (var ratas of minulaenutus.rattad){
+                        if (ratas.id === rattaID){
+                            if(ratas.laenatud == null){
+                                ratas.Laenamine(startDate, endDate);
+                                console.log('ratas laenutatud ID:'+ratas.id+' Algus kuupäev:'+ratas.laenatud+' Kuni:'+ratas.plaanTagastus);
+                            } else {
+                                console.log('See ratas on juba laenutatud (ID:'+ratas.id+' Algus kuupäev:'+ratas.laenatud+' Kuni:'+ratas.plaanTagastus+') ');
+                            }
+                        } 
+                    }
+                } else {
+                    console.log('Vali soovitud ratas enne ning täida kuupäevad!');
+                }
+            }
+        }
+        console.log(minulaenutus.rattad);
+        kuvarattad();
+    }
+    
+</script>
+<div class="container">
+    <h1>Ratta laenutus - Viller Maine</h1>
+    <div class="fieldgroup">
+        <h3>Lisa ratas laenutusse:</h3>
+        <div class="field">
+            <label for="id">ID</label>
+            <input type="text" name="id" id="rattaID">
+        </div>
+        <div class="field">
+            <label for="liik">Liik</label>
+            <input type="text" name="liik" id="rattaLiik">
+        </div>
+        <div class="field">
+            <label for="hind">Hind</label>
+            <input type="text" name="hind" id="rattaHind">
+        </div>
+        <div class="field">
+            <label for="viivis">Viivis</label>
+            <input type="text" name="viivis" id="rattaViivis" value="2.5">
+        </div>
+        <div class="field">
+            <button class="nupp" onclick="lisaLaenutusse()">Lisa ratas</button>
+        </div>
+        <div class="field">
+            <p id="lisaResult"></p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Olemasolevad rattad</h2>
+    <table id="tabel">
+    </table>
+    <div>
+        <h3>Vali kuupäevad</h3>
+        <input class="date startdate" type="date" id="startDate"> kuni <input class="date enddate" type="date" name="enddate" id="endDate">
+    </div>
+    <div>
+        <button class="nupp" onclick="laenutaRatas()">Laenuta</button>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Otsi rattaid liigi järgi</h2>
+    <div class="search">
+        <div class="searchbox">
+            <input type="text" name="otsing" id="otsing">
+            <button class="nupp nupp--otsi" onclick="otsiLiik()">Otsi</button>
+        </div>
+        <div class="field">
+            <div id="searchResult"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
